@@ -260,8 +260,8 @@ function MapView({data,sel,setSel}){
           <h1 style={{margin:0,fontSize:15,fontWeight:800}}>Afrika</h1>
           <p style={{margin:"1px 0",fontSize:8.5,color:"#94a3b8"}}>Buitenlandse Invloed · 54 landen</p>
         </div>
-        <div ref={searchRef} style={{position:"absolute",top:8,right:8,width:180}}>
-          <input value={query} onChange={e=>{setQuery(e.target.value);setShowResults(true)}} onFocus={()=>setShowResults(true)} placeholder="Zoek land..." style={{width:"100%",padding:"5px 10px",borderRadius:8,border:"1px solid #e2e8f0",fontSize:11,background:"rgba(255,255,255,.95)",boxSizing:"border-box",outline:"none",boxShadow:"0 2px 8px rgba(0,0,0,.08)"}}/>
+        <div ref={searchRef} style={{position:"absolute",top:8,right:8,width:220}}>
+          <input value={query} onChange={e=>{setQuery(e.target.value);setShowResults(true)}} onFocus={()=>setShowResults(true)} placeholder="Zoek land..." style={{width:"100%",padding:"8px 12px",borderRadius:8,border:"1px solid #e2e8f0",fontSize:13,background:"rgba(255,255,255,.95)",boxSizing:"border-box",outline:"none",boxShadow:"0 2px 8px rgba(0,0,0,.08)"}}/>
           {showResults&&searchResults.length>0&&(
             <div style={{position:"absolute",top:30,left:0,right:0,background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,boxShadow:"0 4px 16px rgba(0,0,0,.12)",overflow:"hidden",zIndex:200}}>
               {searchResults.map(([id,c])=>(
