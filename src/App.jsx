@@ -236,22 +236,6 @@ function MapView({data,sel,setSel}){
           .attr("stroke-width",isSel?2.5:(HD.has(d.id)?1.2:.5))
           .attr("opacity",sel&&!isSel?(HD.has(d.id)?.6:.25):(HD.has(d.id)?1:.5)).attr("filter",null);setHov(null)})
       .on("click",function(ev,d){if(HD.has(d.id)){setSel(prev=>prev===d.id?null:d.id);setTab("defence")}});
-    // Disputed border: erase original border, draw dashed line
-    if(pr){
-      const wsPoints=[[-13.17,27.67],[-12.0,27.67],[-10.0,27.67],[-8.67,27.67]];
-      const proj=wsPoints.map(c=>pr(c)).filter(Boolean);
-      if(proj.length>1){
-        const line=d3.line().x(d=>d[0]).y(d=>d[1]);
-        // Erase the existing solid border
-        sv.append("path").attr("d",line(proj))
-          .attr("fill","none").attr("stroke","#f8fafc").attr("stroke-width",4)
-          .attr("opacity",1);
-        // Draw dashed line on top
-        sv.append("path").attr("d",line(proj))
-          .attr("fill","none").attr("stroke","#888").attr("stroke-width",1.5)
-          .attr("stroke-dasharray","5,4").attr("opacity",.8);
-      }
-    }
   },[geo,pa,sel]);
 
   const cd=sel?data[sel]:null;
