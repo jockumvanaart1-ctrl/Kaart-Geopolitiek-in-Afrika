@@ -200,6 +200,14 @@ function MapView({data,sel,setSel}){
   const svgRef=useRef(null);
   const[geo,setGeo]=useState(null);const[ld,setLd]=useState(true);const[er,setEr]=useState(null);
   const[hov,setHov]=useState(null);const[tip,setTip]=useState({x:0,y:0});const[tab,setTab]=useState("defence");
+  const[query,setQuery]=useState("");const[showResults,setShowResults]=useState(false);
+  const searchRef=useRef(null);
+  const searchResults=useMemo(()=>{
+    if(!query.trim())return[];
+    const q=query.toLowerCase();
+    return Object.entries(data).filter(([id,c])=>c.name.toLowerCase().includes(q)||(CL[id]||"").toLowerCase().includes(q)||c.s.toLowerCase().includes(q)).slice(0,8);
+  },[query,data]);
+  useEffect(()=>{const h=e=>{if(searchRef.current&&!searchRef.current.contains(e.target))setShowResults(false)};document.addEventListener("mousedown",h);return()=>document.removeEventListener("mousedown",h)},[]);
   const W=520,H=640;
 
   useEffect(()=>{fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(t=>{setGeo({type:"FeatureCollection",features:dt(t,"countries").features.filter(f=>AI.has(f.id))});setLd(false)}).catch(e=>{setEr(e.message);setLd(false)})},[]);
@@ -251,6 +259,22 @@ function MapView({data,sel,setSel}){
         <div style={{position:"absolute",top:8,left:8}}>
           <h1 style={{margin:0,fontSize:15,fontWeight:800}}>Afrika</h1>
           <p style={{margin:"1px 0",fontSize:8.5,color:"#94a3b8"}}>Buitenlandse Invloed · 54 landen</p>
+        </div>
+        <div ref={searchRef} style={{position:"absolute",top:8,right:8,width:180}}>
+          <input value={query} onChange={e=>{setQuery(e.target.value);setShowResults(true)}} onFocus={()=>setShowResults(true)} placeholder="🔍 Zoek land..." style={{width:"100%",padding:"5px 10px",borderRadius:8,border:"1px solid #e2e8f0",fontSize:11,background:"rgba(255,255,255,.95)",boxSizing:"border-box",outline:"none",boxShadow:"0 2px 8px rgba(0,0,0,.08)"}}/>
+          {showResults&&searchResults.length>0&&(
+            <div style={{position:"absolute",top:30,left:0,right:0,background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,boxShadow:"0 4px 16px rgba(0,0,0,.12)",overflow:"hidden",zIndex:200}}>
+              {searchResults.map(([id,c])=>(
+                <div key={id} onClick={()=>{setSel(id);setQuery("");setShowResults(false);setTab("defence")}} style={{padding:"6px 10px",cursor:"pointer",borderBottom:"1px solid #f1f5f9",display:"flex",alignItems:"center",gap:6}} onMouseEnter={e=>e.currentTarget.style.background="#f1f5f9"} onMouseLeave={e=>e.currentTarget.style.background="#fff"}>
+                  <div style={{width:6,height:6,borderRadius:2,background:(P[CL[id]]||{f:"#999"}).f,flexShrink:0}}/>
+                  <div>
+                    <div style={{fontSize:11,fontWeight:600}}>{c.name}</div>
+                    <div style={{fontSize:8.5,color:"#94a3b8"}}>{CL[id]}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div style={{flex:1,overflow:"hidden",background:"#fff",borderLeft:"1px solid #e2e8f0",display:"flex",flexDirection:"column"}}>
