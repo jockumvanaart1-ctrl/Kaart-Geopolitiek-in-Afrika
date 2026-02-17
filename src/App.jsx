@@ -129,7 +129,7 @@ function AdminPanel({data,onUpdate}){
 
   const upField=(field,val)=>setEditData(p=>({...p,[field]:val}));
   const upActor=(cat,idx,key,val)=>setEditData(p=>{const n={...p};n[cat]=[...n[cat]];n[cat][idx]={...n[cat][idx],[key]:val};return n});
-  const addActor=cat=>setEditData(p=>{const n={...p};n[cat]=[...n[cat],{f:"🏳️",a:"",d:""}];return n});
+  const addActor=cat=>setEditData(p=>{const n={...p};n[cat]=[...n[cat],{a:"",d:""}];return n});
   const rmActor=(cat,idx)=>setEditData(p=>{const n={...p};n[cat]=n[cat].filter((_,i)=>i!==idx);return n});
 
   return(
@@ -171,7 +171,6 @@ function AdminPanel({data,onUpdate}){
                 {(editData[cat]||[]).map((actor,i)=>(
                   <div key={i} style={{padding:8,borderRadius:6,border:"1px solid #f1f5f9",background:"#fafbfc",marginBottom:4}}>
                     <div style={{display:"flex",gap:6,alignItems:"center",marginBottom:4}}>
-                      <input value={actor.f} onChange={e=>upActor(cat,i,"f",e.target.value)} style={{width:36,padding:"3px 4px",borderRadius:4,border:"1px solid #e2e8f0",fontSize:12,textAlign:"center"}} title="Vlag emoji"/>
                       <input value={actor.a} onChange={e=>upActor(cat,i,"a",e.target.value)} placeholder="Actor naam" style={{flex:1,padding:"3px 6px",borderRadius:4,border:"1px solid #e2e8f0",fontSize:11,fontWeight:600}}/>
                       <button onClick={()=>rmActor(cat,i)} style={{fontSize:10,color:"#DC2626",background:"none",border:"none",cursor:"pointer",padding:"2px 4px"}}>✕</button>
                     </div>
@@ -297,7 +296,7 @@ function MapView({data,sel,setSel}){
           </div>
           <div style={{flex:1,overflowY:"auto",padding:"5px 14px 14px"}}>
             {(cd[tab]||[]).map((x,i)=>(<div key={i} style={{padding:"7px 9px",borderRadius:6,marginBottom:4,background:"#f8fafc",border:"1px solid #f1f5f9"}}>
-              <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:2}}><span style={{fontSize:14}}>{x.f}</span><span style={{fontSize:11,fontWeight:700}}>{x.a}</span></div>
+              <div style={{marginBottom:2}}><span style={{fontSize:11,fontWeight:700}}>{x.a}</span></div>
               <p style={{margin:0,fontSize:10,color:"#64748b",lineHeight:1.5}}>{x.d}</p>
             </div>))}
           </div>
