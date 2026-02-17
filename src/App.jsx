@@ -252,16 +252,16 @@ function MapView({data,sel,setSel}){
           <div style={{fontWeight:700,fontSize:11}}>{NM[hov]}</div>
           <div style={{fontSize:8.5,color:HD.has(hov)?"#4F46E5":"#94a3b8",marginTop:1}}>{HD.has(hov)?`${CL[hov]} · Klik`:CL[hov]||""}</div>
         </div>)}
-        <div style={{position:"absolute",bottom:6,left:6,background:"rgba(255,255,255,.92)",border:"1px solid #e2e8f0",borderRadius:6,padding:"4px 8px"}}>
-          <div style={{fontSize:8,fontWeight:700,color:"#94a3b8",textTransform:"uppercase",letterSpacing:.6,marginBottom:2}}>Clusters</div>
-          {Object.entries(P).map(([n,c])=>(<div key={n} style={{display:"flex",alignItems:"center",gap:4,marginBottom:1}}><div style={{width:7,height:7,borderRadius:2,background:c.f}}/><span style={{fontSize:8.5,color:"#64748b"}}>{n}</span></div>))}
+        <div style={{position:"absolute",bottom:8,left:8,background:"rgba(255,255,255,.92)",border:"1px solid #e2e8f0",borderRadius:8,padding:"8px 12px"}}>
+          <div style={{fontSize:10,fontWeight:700,color:"#94a3b8",textTransform:"uppercase",letterSpacing:.6,marginBottom:4}}>Clusters</div>
+          {Object.entries(P).map(([n,c])=>(<div key={n} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}><div style={{width:10,height:10,borderRadius:3,background:c.f}}/><span style={{fontSize:11,color:"#4a5568"}}>{n}</span></div>))}
         </div>
         <div style={{position:"absolute",top:8,left:8}}>
           <h1 style={{margin:0,fontSize:15,fontWeight:800}}>Afrika</h1>
           <p style={{margin:"1px 0",fontSize:8.5,color:"#94a3b8"}}>Buitenlandse Invloed · 54 landen</p>
         </div>
         <div ref={searchRef} style={{position:"absolute",top:8,right:8,width:180}}>
-          <input value={query} onChange={e=>{setQuery(e.target.value);setShowResults(true)}} onFocus={()=>setShowResults(true)} placeholder="🔍 Zoek land..." style={{width:"100%",padding:"5px 10px",borderRadius:8,border:"1px solid #e2e8f0",fontSize:11,background:"rgba(255,255,255,.95)",boxSizing:"border-box",outline:"none",boxShadow:"0 2px 8px rgba(0,0,0,.08)"}}/>
+          <input value={query} onChange={e=>{setQuery(e.target.value);setShowResults(true)}} onFocus={()=>setShowResults(true)} placeholder="Zoek land..." style={{width:"100%",padding:"5px 10px",borderRadius:8,border:"1px solid #e2e8f0",fontSize:11,background:"rgba(255,255,255,.95)",boxSizing:"border-box",outline:"none",boxShadow:"0 2px 8px rgba(0,0,0,.08)"}}/>
           {showResults&&searchResults.length>0&&(
             <div style={{position:"absolute",top:30,left:0,right:0,background:"#fff",border:"1px solid #e2e8f0",borderRadius:8,boxShadow:"0 4px 16px rgba(0,0,0,.12)",overflow:"hidden",zIndex:200}}>
               {searchResults.map(([id,c])=>(
