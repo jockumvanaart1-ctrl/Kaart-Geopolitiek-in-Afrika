@@ -236,6 +236,22 @@ function MapView({data,sel,setSel}){
           .attr("stroke-width",isSel?2.5:(HD.has(d.id)?1.2:.5))
           .attr("opacity",sel&&!isSel?(HD.has(d.id)?.6:.25):(HD.has(d.id)?1:.5)).attr("filter",null);setHov(null)})
       .on("click",function(ev,d){if(HD.has(d.id)){setSel(prev=>prev===d.id?null:d.id);setTab("defence")}});
+    // Disputed border: erase original border, draw dashed line
+    if(pr){
+      const wsPoints=[[-13.17,27.67],[-12.0,27.67],[-10.0,27.67],[-8.67,27.67]];
+      const proj=wsPoints.map(c=>pr(c)).filter(Boolean);
+      if(proj.length>1){
+        const line=d3.line().x(d=>d[0]).y(d=>d[1]);
+        // Erase the existing solid border
+        sv.append("path").attr("d",line(proj))
+          .attr("fill","none").attr("stroke","#f8fafc").attr("stroke-width",4)
+          .attr("opacity",1);
+        // Draw dashed line on top
+        sv.append("path").attr("d",line(proj))
+          .attr("fill","none").attr("stroke","#888").attr("stroke-width",1.5)
+          .attr("stroke-dasharray","5,4").attr("opacity",.8);
+      }
+    }
   },[geo,pa,sel]);
 
   const cd=sel?data[sel]:null;
@@ -278,26 +294,26 @@ function MapView({data,sel,setSel}){
       </div>
       <div style={{flex:1,overflow:"hidden",background:"#fff",borderLeft:"1px solid #e2e8f0",display:"flex",flexDirection:"column"}}>
         {cd?(<>
-          <div style={{padding:"12px 14px 7px",borderBottom:"1px solid #e2e8f0",flexShrink:0}}>
+          <div style={{padding:"16px 18px 10px",borderBottom:"1px solid #e2e8f0",flexShrink:0}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"start"}}>
               <div>
-                <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:2}}>
-                  <div style={{width:7,height:7,borderRadius:2,background:(P[CL[sel]]||{}).f}}/>
-                  <span style={{fontSize:8,fontWeight:700,color:"#94a3b8",textTransform:"uppercase"}}>{CL[sel]}</span>
+                <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
+                  <div style={{width:9,height:9,borderRadius:3,background:(P[CL[sel]]||{}).f}}/>
+                  <span style={{fontSize:10,fontWeight:700,color:"#94a3b8",textTransform:"uppercase"}}>{CL[sel]}</span>
                 </div>
-                <h2 style={{margin:0,fontSize:18,fontWeight:800}}>{cd.name}</h2>
+                <h2 style={{margin:0,fontSize:22,fontWeight:800}}>{cd.name}</h2>
               </div>
-              <button onClick={()=>setSel(null)} style={{background:"#f1f5f9",border:"1px solid #e2e8f0",color:"#94a3b8",borderRadius:5,width:22,height:22,cursor:"pointer",fontSize:11,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+              <button onClick={()=>setSel(null)} style={{background:"#f1f5f9",border:"1px solid #e2e8f0",color:"#94a3b8",borderRadius:5,width:26,height:26,cursor:"pointer",fontSize:13,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
             </div>
-            <p style={{margin:"4px 0 0",fontSize:10,color:"#64748b",lineHeight:1.45}}>{cd.s}</p>
+            <p style={{margin:"6px 0 0",fontSize:13,color:"#64748b",lineHeight:1.55}}>{cd.s}</p>
           </div>
-          <div style={{display:"flex",gap:2,padding:"5px 14px 0",flexShrink:0}}>
-            {TABS.map(t=>(<button key={t} onClick={()=>setTab(t)} style={{padding:"3px 9px",borderRadius:5,border:"none",cursor:"pointer",fontSize:10,fontWeight:600,background:tab===t?TC[t]+"15":"transparent",color:tab===t?TC[t]:"#94a3b8"}}>{TL[t]}</button>))}
+          <div style={{display:"flex",gap:3,padding:"8px 18px 0",flexShrink:0}}>
+            {TABS.map(t=>(<button key={t} onClick={()=>setTab(t)} style={{padding:"5px 12px",borderRadius:6,border:"none",cursor:"pointer",fontSize:13,fontWeight:600,background:tab===t?TC[t]+"15":"transparent",color:tab===t?TC[t]:"#94a3b8"}}>{TL[t]}</button>))}
           </div>
-          <div style={{flex:1,overflowY:"auto",padding:"5px 14px 14px"}}>
-            {(cd[tab]||[]).map((x,i)=>(<div key={i} style={{padding:"7px 9px",borderRadius:6,marginBottom:4,background:"#f8fafc",border:"1px solid #f1f5f9"}}>
-              <div style={{marginBottom:2}}><span style={{fontSize:11,fontWeight:700}}>{x.a}</span></div>
-              <p style={{margin:0,fontSize:10,color:"#64748b",lineHeight:1.5}}>{x.d}</p>
+          <div style={{flex:1,overflowY:"auto",padding:"8px 18px 18px"}}>
+            {(cd[tab]||[]).map((x,i)=>(<div key={i} style={{padding:"10px 12px",borderRadius:8,marginBottom:6,background:"#f8fafc",border:"1px solid #f1f5f9"}}>
+              <div style={{marginBottom:3}}><span style={{fontSize:14,fontWeight:700}}>{x.a}</span></div>
+              <p style={{margin:0,fontSize:13,color:"#64748b",lineHeight:1.6}}>{x.d}</p>
             </div>))}
           </div>
         </>):(
